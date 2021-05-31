@@ -1,11 +1,13 @@
-from typing import List
+# from typing import List
 from pygameapp import PyGameApp
-import pygame.key, pygame.surface, pygame.display
+import pygame.key, pygame.surface, pygame.display, pygame.transform
 #from pygame import key
 from pygame.locals import *
 
+
 class Arrow():
-    def __init__(self, direction, xposition, key):
+    def __init__(self, parent, direction, xposition, key):
+        self.parent = parent
         self.direction = direction  #'left', right, up, down
         # self.isPressed = False
         self.defaultImageName = self.direction + "_default.png"
@@ -20,69 +22,82 @@ class Arrow():
         self.pressedImage = pygame.image.load(self.pressedImageName).convert()
 
     def is_pressed(self):
-        keys = pygame.key.get_pressed()
-        if keys[self.key]:
+        # keys = pygame.key.get_pressed()
+        if self.parent.keysPressed[self.key]:
             return True
         else:
             return False
 
-    def render(self, surface):
+    def render(self):
 
         if self.is_pressed():
-            surface.blit(self.pressedImage, (self.xposition, 10))
+            self.parent.surface.blit(self.pressedImage, (self.xposition, 10))
         else:
-            surface.blit(self.defaultImage, (self.xposition, 10))
+            self.parent.surface.blit(self.defaultImage, (self.xposition, 10))
             
 
-class ArrowLine():
-    def __init__(self):
+class Line():
+    def __init__(self, parent):
+        self.parent = parent
         self.yposition = 300
         self.arrow1image = None
 
     def load(self):
         self.arrow1image = pygame.image.load("left_default.png").convert()
 
-    def render(self, surface):
-        surface.blit(self.arrow1image, (10, self.yposition))
+    def render(self):
+        self.parent.surface.blit(self.arrow1image, (10, self.yposition))
         
     def move(self):
         self.yposition -= 1
 
-class FunkinApp(PyGameApp):
+        if self.parent.keysPressed[K_UP]:
+            self.arrow1image = pygame.transform.rotate(self.arrow1image, 180)
 
+
+class FunkinApp(PyGameApp):
+    # variable creation
     def __init__(self):
         super().__init__() 
-        self.arrows: List[Arrow] = []
-        self.arrows.append(Arrow('left', 10, K_LEFT))
-        self.arrows.append(Arrow('left', 100, K_RIGHT))
+        self.arrows = []
+        self.arrows.append(Arrow(self, 'left', 10, K_LEFT))
+        self.arrows.append(Arrow(self, 'left', 100, K_RIGHT))
 
-        self.line = ArrowLine()
+        self.movingline = Line(self)
 
         self.width = 800
         self.height = 600
+        self.testfont = None
+        self.myText = None
 
+    # game load
     def on_start(self):
+        self.testfont = pygame.font.SysFont("Verdana", 20)
+        self.myText = self.testfont.render( "mart is great", True, (0,0,0))
+
         for arrow in self.arrows:
             arrow.load()
-        self.line.load()
+        self.movingline.load()
 
+    # game logic
     def on_loop(self):
-        keys = pygame.key.get_pressed()
-        if keys[K_ESCAPE]:
+        if self.keysPressed[K_ESCAPE]:
             self.running = False
 
-        self.line.move()
+        self.movingline.move()
 
+    # game display
     def on_render(self):
         #display background
         self.surface.fill((255, 255, 255))
         
         # display arrows
         for arrow in self.arrows:
-            arrow.render(self.surface)
+            arrow.render()
 
-        
-        self.line.render(self.surface)
+        self.movingline.render()
+
+        self.surface.blit(self.myText, (500,500))
         #diplay notes
 
 if __name__ == "__main__" :

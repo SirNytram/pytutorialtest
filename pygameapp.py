@@ -1,7 +1,7 @@
 import pygame, pygame.display, pygame.surface
 from pygame.locals import *
 
-     
+
 class PyGameApp:
     def __init__(self):
         self.running = True
@@ -10,6 +10,7 @@ class PyGameApp:
         self.height = 480
         self.fps = 60
         # self.objlist = []
+        self.keysPressed = None
  
  
     def process_event(self, event):
@@ -17,13 +18,13 @@ class PyGameApp:
             self.running = False
 
 
+    def on_start(self):
+        pass
     def on_loop(self):
         pass
     def on_render(self):
         pass
 
-    def on_start(self):
-        pass
 
 
     def cleanup(self):
@@ -38,6 +39,7 @@ class PyGameApp:
  
         self.on_start()
         while( self.running ):
+            self.keysPressed = pygame.key.get_pressed()
             for event in pygame.event.get():
                 self.process_event(event)
             self.on_loop()
