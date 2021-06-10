@@ -113,5 +113,5 @@ class GameApp:
             self.clock.tick(self.fps)
  
 if __name__ == "__main__" :
-    theApp = PyGameApp()
+    theApp = GameApp()
     theApp.start()
