@@ -101,7 +101,7 @@ class FunkinApp(GameApp):
             self.running = False
 
         if self.keysPressed[K_r]:
-            self.movingline.yposition = 300
+            self.movingnote.yposition = 300
             
         if self.keysPressed[K_f]:
             pygame.display.toggle_fullscreen()
