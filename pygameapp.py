@@ -33,9 +33,12 @@ class GameFont():
         self.size = size
         self.font = pygame.font.SysFont(self.name, self.size)
 
-class GameText(GameImage):
+class GameText():
     def __init__(self, font, text = '', position = (0,0), col = (0,0,0)):
-        super().__init__(None, position)
+
+        self.image = None
+        self.position =  position
+
         self.font = font
         self.text = text
         self.color = col
@@ -45,10 +48,12 @@ class GameText(GameImage):
         self.render(position)
 
     def render(self, position = None):
+        if position != None:
+            self.position = position
+
         if self.text != '':
             self.image = self.font.font.render(self.text, True, self.color)
-
-        super().render(position)
+            pygame.display.get_surface().blit(self.image, self.position)
 
 class GameApp:
     def __init__(self):

@@ -7,31 +7,26 @@ import json
 
 
 class TopArrow():
-    def __init__(self, parent, direction, xposition, key):
+    def __init__(self, direction, xposition):
         super().__init__() 
-        self.parent = parent
         self.direction = direction  #'left', right, up, down
         # self.isPressed = False
         self.xposition = xposition
-        self.defaultImage = None
-        self.pressedImage = None
-        self.key = key
         self.defaultImage = GameImage(self.direction + "_default.png", (self.xposition, 10))
         self.pressedImage = GameImage(self.direction + "_pressed.png", (self.xposition, 10))
+        self.isPressed = False
 
 
     def render(self):
-        if self.parent.keysPressed[self.key]:
+        if self.isPressed:
             self.pressedImage.render()
         else:
             self.defaultImage.render()
             
 
 class Note():
-    def __init__(self, parent):
-        self.parent = parent
+    def __init__(self):
         self.yposition = 300
-        self.arrow1image = None
         self.speed = 0.5
         self.arrow1image = GameImage("left_default.png")
 
@@ -39,19 +34,25 @@ class Note():
         self.arrow1image.render((20, self.yposition))
         
     def move(self):
-    
         self.yposition -= (self.speed * 1)
 
-        if self.parent.keysPressed[K_UP]:
-            self.arrow1image.rotate(180)
 
+class Song():
+    def __init__(self):
+        self.noteList = []
+
+    def loadFile(self, fileName):
+        # self.noteList.append(Note())
+        pass
+    
 
 class FunkinApp(GameApp):
     # variable creation
     def __init__(self):
         super().__init__() 
         self.fps = 60
-        self.toparrowList = []
+        self.toparrowLeft = None
+        self.toparrowRight = None
 
         self.movingnote = None
 
@@ -70,10 +71,9 @@ class FunkinApp(GameApp):
 
     # game load
     def on_start(self):
-        self.movingnote = Note(self)
-        myArrow = TopArrow(self, 'left', 10, K_LEFT)
-        self.toparrowList.append(myArrow)
-        self.toparrowList.append(TopArrow(self, 'left', 100, K_RIGHT))
+        self.movingnote = Note()
+        self.toparrowLeft = TopArrow('left', 10)
+        self.toparrowRight = TopArrow('left', 100)
 
         self.testfont =  GameFont("Verdana", 20)
         self.myText = GameText(self.testfont)
@@ -116,9 +116,9 @@ class FunkinApp(GameApp):
         self.surface.fill((255, 255, 255))
         
         # display arrows
-        for arrow in self.toparrowList:
-            arrow.render()
-
+        self.toparrowLeft.render()
+        self.toparrowRight.render()
+        
         self.movingnote.render()
 
         #diplay some text
@@ -141,8 +141,22 @@ class FunkinApp(GameApp):
         
 
     def on_key(self, isDown, key, mod):
+        
         if key == K_f and isDown:
             pygame.display.toggle_fullscreen()
+
+
+        if key == K_LEFT:
+            if isDown:
+                self.toparrowLeft.isPressed = True
+            else:
+                self.toparrowLeft.isPressed = False
+
+        if key == K_RIGHT:
+            if isDown:
+                self.toparrowRight.isPressed = True
+            else:
+                self.toparrowRight.isPressed = False
            
 
 
