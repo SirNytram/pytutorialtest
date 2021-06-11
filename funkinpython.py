@@ -27,7 +27,7 @@ class TopArrow():
             self.defaultImage.render()
             
 
-class Arrow():
+class Note():
     def __init__(self, parent):
         self.parent = parent
         self.yposition = 300
@@ -53,7 +53,7 @@ class FunkinApp(GameApp):
         self.fps = 60
         self.toparrowList = []
 
-        self.movingline = None
+        self.movingnote = None
 
         self.width = 800
         self.height = 600
@@ -64,12 +64,13 @@ class FunkinApp(GameApp):
         self.msText = None
         self.numSecs = 0
         self.numSecsTimerId = None
+        self.newCarTimerId = None
         self.tick = 0
         self.ms = 0
 
     # game load
     def on_start(self):
-        self.movingline = Arrow(self)
+        self.movingnote = Note(self)
         myArrow = TopArrow(self, 'left', 10, K_LEFT)
         self.toparrowList.append(myArrow)
         self.toparrowList.append(TopArrow(self, 'left', 100, K_RIGHT))
@@ -91,6 +92,7 @@ class FunkinApp(GameApp):
                 print(notes)
 
         self.numSecsTimerId = self.addTimer(1000, True)
+        self.newCarTimerId = self.addTimer(2000)
 
 
     # game logic
@@ -104,7 +106,7 @@ class FunkinApp(GameApp):
         if self.keysPressed[K_f]:
             pygame.display.toggle_fullscreen()
 
-        self.movingline.move()
+        self.movingnote.move()
 
         self.tick += 1
 
@@ -117,7 +119,7 @@ class FunkinApp(GameApp):
         for arrow in self.toparrowList:
             arrow.render()
 
-        self.movingline.render()
+        self.movingnote.render()
 
         #diplay some text
         self.myText.text = 'fps:' + str(self.clock.get_fps())
@@ -135,8 +137,10 @@ class FunkinApp(GameApp):
     def on_event(self, eventId):
         if eventId == self.numSecsTimerId:
             self.numSecs += 1
+            self.movingnote.arrow1image.rotate(45)
 
-            self.movingline.arrow1image.rotate(45)
+           
+
 
 if __name__ == "__main__" :
 
