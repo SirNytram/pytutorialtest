@@ -13,41 +13,30 @@ class TopArrow():
         self.direction = direction  #'left', right, up, down
         # self.isPressed = False
         self.xposition = xposition
+        self.defaultImage = None
+        self.pressedImage = None
+        self.key = key
         self.defaultImage = GameImage(self.direction + "_default.png", (self.xposition, 10))
         self.pressedImage = GameImage(self.direction + "_pressed.png", (self.xposition, 10))
-        self.key = key
 
-    def load(self):
-        self.defaultImage.load()
-        self.pressedImage.load()
-
-
-    def is_pressed(self):
-        if self.parent.keysPressed[self.key]:
-            return True
-        else:
-            return False
 
     def render(self):
-
-        if self.is_pressed():
-            self.pressedImage.blit()
+        if self.parent.keysPressed[self.key]:
+            self.pressedImage.render()
         else:
-            self.defaultImage.blit()
+            self.defaultImage.render()
             
 
-class Line():
+class Arrow():
     def __init__(self, parent):
         self.parent = parent
         self.yposition = 300
-        self.arrow1image = GameImage("left_default.png")
+        self.arrow1image = None
         self.speed = 0.5
-
-    def load(self):
-        self.arrow1image.load()
+        self.arrow1image = GameImage("left_default.png")
 
     def render(self):
-        self.arrow1image.blit((20, self.yposition))
+        self.arrow1image.render((20, self.yposition))
         
     def move(self):
     
@@ -64,7 +53,7 @@ class FunkinApp(GameApp):
         self.fps = 60
         self.toparrowList = []
 
-        self.movingline = Line(self)
+        self.movingline = None
 
         self.width = 800
         self.height = 600
@@ -80,6 +69,7 @@ class FunkinApp(GameApp):
 
     # game load
     def on_start(self):
+        self.movingline = Arrow(self)
         myArrow = TopArrow(self, 'left', 10, K_LEFT)
         self.toparrowList.append(myArrow)
         self.toparrowList.append(TopArrow(self, 'left', 100, K_RIGHT))
@@ -101,11 +91,6 @@ class FunkinApp(GameApp):
                 print(notes)
 
         self.numSecsTimerId = self.addTimer(1000, True)
-        self.testfont.load()
-
-        for arrow in self.toparrowList:
-            arrow.load()
-        self.movingline.load()
 
 
     # game logic
@@ -116,6 +101,8 @@ class FunkinApp(GameApp):
         if self.keysPressed[K_r]:
             self.movingline.yposition = 300
             
+        if self.keysPressed[K_f]:
+            pygame.display.toggle_fullscreen()
 
         self.movingline.move()
 
@@ -134,19 +121,19 @@ class FunkinApp(GameApp):
 
         #diplay some text
         self.myText.text = 'fps:' + str(self.clock.get_fps())
-        self.myText.blit((500,500))
+        self.myText.render((500,500))
 
         # self.numSecsText.text = str(self.numSecs)
-        # self.numSecsText.blit((400,500))
-        self.numSecsText.blitText(str(self.numSecs), (400,500))
+        # self.numSecsText.render((400,500))
+        self.numSecsText.renderText(str(self.numSecs), (400,500))
 
-        self.tickText.blitText('tick:' + str(self.tick), (200,450))
+        self.tickText.renderText('tick:' + str(self.tick), (200,450))
         self.ms += self.clock.get_time()
-        self.msText.blitText('ms:' + str(self.ms))
+        self.msText.renderText('ms:' + str(self.ms))
         
 
-    def on_event(self, eventid):
-        if eventid == self.numSecsTimerId:
+    def on_event(self, eventId):
+        if eventId == self.numSecsTimerId:
             self.numSecs += 1
 
             self.movingline.arrow1image.rotate(45)
