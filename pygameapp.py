@@ -72,6 +72,8 @@ class GameApp:
         pass
     def on_event(self, eventId):
         pass
+    def on_keydown(self, key):
+        pass
 
 
     def cleanup(self):
@@ -99,6 +101,9 @@ class GameApp:
                     self.running = False
 
                 self.on_event(event.type)
+
+                if event.type == KEYDOWN:
+                    self.on_keydown(event.key)
 
 
             self.on_loop()

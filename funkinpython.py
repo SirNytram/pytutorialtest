@@ -103,8 +103,8 @@ class FunkinApp(GameApp):
         if self.keysPressed[K_r]:
             self.movingnote.yposition = 300
             
-        if self.keysPressed[K_f]:
-            pygame.display.toggle_fullscreen()
+        # if self.keysPressed[K_f]:
+        #     pygame.display.toggle_fullscreen()
 
         self.movingnote.move()
 
@@ -138,7 +138,11 @@ class FunkinApp(GameApp):
         if eventId == self.numSecsTimerId:
             self.numSecs += 1
             self.movingnote.arrow1image.rotate(45)
+        
 
+    def on_keydown(self, key):
+        if key == K_f:
+            pygame.display.toggle_fullscreen()
            
 
 
