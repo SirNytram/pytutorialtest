@@ -23,6 +23,13 @@ class TopArrow():
         else:
             self.defaultImage.render()
             
+class NoteDerived(GameImage):
+    def __init__(self):
+        super().__init__("left_default.png", (75, 300))
+
+    def move(self):
+        self.position = (self.position[0], self.position[1] - 1)
+
 
 class Note():
     def __init__(self):
@@ -46,7 +53,7 @@ class Song():
         pass
     
 
-class FunkinApp(GameApp):
+class MyGame(GameApp):
     # variable creation
     def __init__(self):
         super().__init__() 
@@ -68,10 +75,14 @@ class FunkinApp(GameApp):
         self.newCarTimerId = None
         self.tick = 0
         self.ms = 0
+        self.movingnote2 = None
 
     # game load
     def on_start(self):
+
         self.movingnote = Note()
+        self.movingnote2 = NoteDerived()
+        
         self.toparrowLeft = TopArrow('left', 10)
         self.toparrowRight = TopArrow('left', 100)
 
@@ -107,6 +118,7 @@ class FunkinApp(GameApp):
         #     pygame.display.toggle_fullscreen()
 
         self.movingnote.move()
+        self.movingnote2.move()
 
         self.tick += 1
 
@@ -120,6 +132,7 @@ class FunkinApp(GameApp):
         self.toparrowRight.render()
         
         self.movingnote.render()
+        self.movingnote2.render()
 
         #diplay some text
         self.myText.text = 'fps:' + str(self.clock.get_fps())
@@ -161,4 +174,4 @@ class FunkinApp(GameApp):
 
 
 if __name__ == "__main__" :
-    FunkinApp().start()
+    MyGame().start()
