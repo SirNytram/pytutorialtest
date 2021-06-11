@@ -30,8 +30,6 @@ class GameImage():
 
 
 
-
-
 class GameFont():
     def __init__(self, name, size):
         self.font = None
@@ -55,6 +53,7 @@ class GameText(GameImage):
     def blit(self, position = None):
         if self.text != '':
             self.image = self.font.font.render(self.text, True, self.color)
+
         super().blit(position)
 
 class GameApp:
@@ -64,11 +63,9 @@ class GameApp:
         self.width = 640
         self.height = 480
         self.fps = 10
-        # self.objlist = []
         self.keysPressed = None
         self.curUserEvent = USEREVENT 
         self.clock = None
-
  
 
 

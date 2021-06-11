@@ -62,45 +62,48 @@ class FunkinApp(GameApp):
     def __init__(self):
         super().__init__() 
         self.fps = 60
-        self.arrows = []
-        self.arrows = [] 
+        self.toparrowList = []
 
         self.movingline = Line(self)
 
         self.width = 800
         self.height = 600
-        self.testfont =  GameFont("Verdana", 20)
-        self.myText = GameText(self.testfont)
-        self.tickText = GameText(self.testfont)
-        self.numSecsText = GameText(self.testfont)
-        self.gettimeText = GameText(self.testfont)
+        self.testfont =  None
+        self.myText = None
+        self.tickText = None
+        self.numSecsText = None
+        self.msText = None
         self.numSecs = 0
         self.numSecsTimerId = None
         self.tick = 0
         self.ms = 0
-        self.songfile = None
 
     # game load
     def on_start(self):
         myArrow = TopArrow(self, 'left', 10, K_LEFT)
-        self.arrows.append(myArrow)
-        self.arrows.append(TopArrow(self, 'left', 100, K_RIGHT))
+        self.toparrowList.append(myArrow)
+        self.toparrowList.append(TopArrow(self, 'left', 100, K_RIGHT))
 
+        self.testfont =  GameFont("Verdana", 20)
+        self.myText = GameText(self.testfont)
+        self.tickText = GameText(self.testfont)
+        self.numSecsText = GameText(self.testfont)
+        self.msText = GameText(self.testfont, '', (200,400) )
 
 
         f = open('tutorialfile.json') 
-        self.songfile = json.load(f)
-        print(self.songfile['song']['song'])
-        for section in self.songfile['notes']:
+        songfile = json.load(f)
+        print(songfile['song']['song'])
+        for section in songfile['notes']:
             print(section['mustHitSection'])
             # print(section['mustHitSection'])
             for notes in section['sectionNotes']:
                 print(notes)
 
-        self.numSecsTimerId = self.addTimer(2000, True)
+        self.numSecsTimerId = self.addTimer(1000, True)
         self.testfont.load()
 
-        for arrow in self.arrows:
+        for arrow in self.toparrowList:
             arrow.load()
         self.movingline.load()
 
@@ -124,7 +127,7 @@ class FunkinApp(GameApp):
         self.surface.fill((255, 255, 255))
         
         # display arrows
-        for arrow in self.arrows:
+        for arrow in self.toparrowList:
             arrow.render()
 
         self.movingline.render()
@@ -139,7 +142,7 @@ class FunkinApp(GameApp):
 
         self.tickText.blitText('tick:' + str(self.tick), (200,450))
         self.ms += self.clock.get_time()
-        self.gettimeText.blitText('ms:' + str(self.ms), (200,400))
+        self.msText.blitText('ms:' + str(self.ms))
         
 
     def on_event(self, eventid):
