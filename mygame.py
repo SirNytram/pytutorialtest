@@ -11,24 +11,24 @@ class MyGame(GameApp):
 
 
     def on_start(self):
-        self.myimage = GameImage('bluecar.png', (10,10))
+        self.imgCar = GameImage('bluecar.png', (10,500))
         self.myFont = GameFont('Verdana',50)
         self.myText = GameText(self.myFont, 'mart is great', (125, 300), (255, 255, 125))
-        # self.myFont = pygame.font.SysFont('Courier New', 25)
-        # self.myFontImage = self.myFont.render('mytext', False, (255,255,125))
         
         
         #  pygame.image.load('bluecar.png')
 
     def on_loop(self):
-        pass
+        self.imgCar.move(y=-5)
+        if self.imgCar.position[1] < 5:
+            self.imgCar.position = (10,500)
 
     def on_render(self):
-        self.myimage.render((100,100))
+        self.surface.fill((100 ,100,255))
+        self.imgCar.render()
+        self.myText.text = str(self.clock.get_time())
         self.myText.render()
 
-        # self.surface.blit(self.myimage, (10,10))
-        # self.surface.blit(self.myFontImage, (200,200))
 
     def on_event(self, eventId):
         pass

@@ -17,7 +17,12 @@ class GameImage():
 
         pygame.display.get_surface().blit(self.image, self.position)
 
+    def move(self, x = None, y = None):
+        if x:
+            self.position = (self.position[0] + x, self.position[1])
 
+        if y:
+            self.position = (self.position[0], self.position[1] + y)
 
     def rotate(self, angle, centerOfRotation=None):
         if centerOfRotation == None:
