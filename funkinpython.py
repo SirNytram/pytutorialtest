@@ -140,14 +140,11 @@ class FunkinApp(GameApp):
             self.movingnote.arrow1image.rotate(45)
         
 
-    def on_keydown(self, key):
-        if key == K_f:
+    def on_key(self, isDown, key, mod):
+        if key == K_f and isDown:
             pygame.display.toggle_fullscreen()
            
 
 
 if __name__ == "__main__" :
-
-    # myapp = FunkinApp()
-    # myapp.start()
     FunkinApp().start()

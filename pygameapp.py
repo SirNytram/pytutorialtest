@@ -58,7 +58,7 @@ class GameApp:
         self.height = 480
         self.isFullScreen = False
         self.fps = 10
-        self.keysPressed = None
+        self.keysPressed = []
         self.curUserEventId = USEREVENT 
         self.clock = None
  
@@ -72,7 +72,7 @@ class GameApp:
         pass
     def on_event(self, eventId):
         pass
-    def on_keydown(self, key):
+    def on_key(self, isDown, key, mod):
         pass
 
 
@@ -103,12 +103,14 @@ class GameApp:
                 self.on_event(event.type)
 
                 if event.type == KEYDOWN:
-                    self.on_keydown(event.key)
+                    self.on_key(True, event.key, event.mod)
+                if event.type == KEYUP:
+                    self.on_key(False, event.key, event.mod)
 
 
             self.on_loop()
-
             self.on_render()
+
             pygame.display.update()
             self.clock.tick(self.fps)
  
