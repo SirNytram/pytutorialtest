@@ -53,7 +53,7 @@ class Song():
         pass
     
 
-class MyGame(GameApp):
+class FunkinApp(GameApp):
     # variable creation
     def __init__(self):
         super().__init__() 
@@ -144,7 +144,7 @@ class MyGame(GameApp):
 
         self.tickText.renderText('tick:' + str(self.tick), (200,450))
         self.ms += self.clock.get_time()
-        self.msText.renderText('ms:' + str(self.ms))
+        self.msText.renderText('ms:' + str(self.clock.get_time()))
         
 
     def on_event(self, eventId):
@@ -174,4 +174,4 @@ class MyGame(GameApp):
 
 
 if __name__ == "__main__" :
-    MyGame().start()
+    FunkinApp().start()

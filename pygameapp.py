@@ -28,14 +28,12 @@ class GameImage():
 
 class GameFont():
     def __init__(self, name, size):
-        self.font = None
         self.name = name
         self.size = size
         self.font = pygame.font.SysFont(self.name, self.size)
 
 class GameText():
     def __init__(self, font, text = '', position = (0,0), col = (0,0,0)):
-
         self.image = None
         self.position =  position
 
@@ -57,12 +55,12 @@ class GameText():
 
 class GameApp:
     def __init__(self):
-        self.running = True
+        self.isRunning = True
         self.surface = None
         self.width = 640
         self.height = 480
         self.isFullScreen = False
-        self.fps = 10
+        self.fps = 100
         self.keysPressed = []
         self.curUserEventId = USEREVENT 
         self.clock = None
@@ -92,18 +90,22 @@ class GameApp:
     def start(self):
         pygame.init()
 
+
+
+
+
         self.surface = pygame.display.set_mode((self.width, self.height))
-        if self.isFullScreen:
+        if self.isFullScreen == True:
             pygame.display.toggle_fullscreen()
 
         self.clock = pygame.time.Clock()
  
         self.on_start()
-        while( self.running ):
+        while( self.isRunning ):
             self.keysPressed = pygame.key.get_pressed()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False
+                    self.isRunning = False
 
                 self.on_event(event.type)
 
@@ -111,6 +113,7 @@ class GameApp:
                     self.on_key(True, event.key, event.mod)
                 if event.type == KEYUP:
                     self.on_key(False, event.key, event.mod)
+                
 
 
             self.on_loop()
@@ -119,8 +122,7 @@ class GameApp:
             pygame.display.update()
             self.clock.tick(self.fps)
  
-if __name__ == "__main__" :
-    theApp = GameApp()
-    theApp.start()
 
-    # GameApp().start()
+if __name__ == "__main__" :
+    
+    GameApp().start()
