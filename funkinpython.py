@@ -1,8 +1,9 @@
+import pygame
 # from typing import List
-from gameapp import GameApp, GameImage, GameFont, GameText
-import pygame.key, pygame.surface, pygame.display, pygame.transform
+from gameapp import *
+
 #from pygame import key
-from pygame.locals import *
+
 import json
 
 

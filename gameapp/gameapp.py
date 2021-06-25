@@ -8,10 +8,14 @@ class GameImage():
         self.image = None
         self.fileName = fileName
         self.position =  position
-        if self.fileName:
+
+    def load(self):
+        if self.fileName and not self.image:
             self.image = pygame.image.load(self.fileName).convert()
 
     def render(self, position = None):
+        self.load()
+
         if position != None:
             self.position = position
 
@@ -35,7 +39,11 @@ class GameFont():
     def __init__(self, name, size):
         self.name = name
         self.size = size
-        self.font = pygame.font.SysFont(self.name, self.size)
+        self.font = None
+
+    def load(self):
+        if not self.font:
+            self.font = pygame.font.SysFont(self.name, self.size)
 
 class GameText():
     def __init__(self, font, text = '', position = (0,0), col = (0,0,0)):
@@ -51,6 +59,8 @@ class GameText():
         self.render(position)
 
     def render(self, position = None):
+        self.font.load()
+
         if position != None:
             self.position = position
 
