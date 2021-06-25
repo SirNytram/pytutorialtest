@@ -8,41 +8,37 @@ class MyRedCar(GameImage):
 
     def move(self):
         if self.bRightSide:
-            super().move(1, 0);
+            self.position.move_ip(1, 0)
         else:
-            super().move(-1, 0)
+            self.position.move_ip(-1, 0)
+
+        if self.position.x < 0:
+            self.position.x = 200
+        if self.position.x > 400:
+            self.position.x = 200
 
 class MyGame(GameApp):
     def __init__(self):
         super().__init__() 
         self.width = 1000
-        self.myimage = None
-        self.myFont = None
-        self.myFontImage = None
-        self.myText = None
         self.redcar = MyRedCar()
         self.fps = 50
-
-
-    def on_start(self):
-        self.imgCar = GameImage('images\\bluecar.png', (10,500))
+        self.bluecar = GameImage('images\\bluecar.png', (10,500))
         # self.redcar = 
-        self.myFont = GameFont('Verdana',50)
-        self.myText = GameText(self.myFont, 'mart is great', (125, 300), (255, 255, 125))
-        
-        
-        #  pygame.image.load('bluecar.png')
+        self.fontVerdana = GameFont('Verdana',50)
+        self.myText = GameText(self.fontVerdana, 'mart is great', (125, 300), (255, 255, 125))
+
 
     def on_loop(self):
-        self.imgCar.move(y=-5)
-        if self.imgCar.position[1] < 5:
-            self.imgCar.position = (10,500)
+        self.bluecar.position.move_ip(0, -5)
+        if self.bluecar.position.y < 5:
+            self.bluecar.position.y  = 500
 
         self.redcar.move()
 
     def on_render(self):
         self.surface.fill((100 ,100,255))
-        self.imgCar.render()
+        self.bluecar.render()
         self.myText.text = str(self.clock.get_time())
         self.myText.render()
         self.redcar.render()

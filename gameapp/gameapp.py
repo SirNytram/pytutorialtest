@@ -1,13 +1,13 @@
-import pygame, pygame.display, pygame.surface
+import pygame
+from pygame import Rect
 from pygame.locals import *
-
 
 
 class GameImage():
     def __init__(self, fileName = None, position = (0,0)):
         self.image = None
         self.fileName = fileName
-        self.position =  position
+        self.position = Rect(position[0], position[1], 0, 0)
 
     def load(self):
         if self.fileName and not self.image:
@@ -16,24 +16,11 @@ class GameImage():
     def render(self, position = None):
         self.load()
 
-        if position != None:
-            self.position = position
+        if position:
+            self.position.x = position[0]
+            self.position.y = position[1]
 
         pygame.display.get_surface().blit(self.image, self.position)
-
-    def move(self, x = None, y = None):
-        if x:
-            self.position = (self.position[0] + x, self.position[1])
-
-        if y:
-            self.position = (self.position[0], self.position[1] + y)
-
-    def rotate(self, angle, centerOfRotation=None):
-        if centerOfRotation == None:
-            self.image = pygame.transform.rotate(self.image, angle)
-        else:
-            pass
-
 
 class GameFont():
     def __init__(self, name, size):
@@ -45,11 +32,9 @@ class GameFont():
         if not self.font:
             self.font = pygame.font.SysFont(self.name, self.size)
 
-class GameText():
-    def __init__(self, font, text = '', position = (0,0), col = (0,0,0)):
-        self.image = None
-        self.position =  position
-
+class GameText(GameImage):
+    def __init__(self, font, text = '', position = (0,0), col:pygame.Color = pygame.Color(0,0,0,0)):
+        super().__init__(fileName=None, position=position)
         self.font = font
         self.text = text
         self.color = col
@@ -75,10 +60,11 @@ class GameApp:
         self.width = 640
         self.height = 480
         self.isFullScreen = False
-        self.fps = 100
+        self.fps = 5
         self.keysPressed = []
         self.curUserEventId = USEREVENT 
         self.clock = None
+        
  
 
 
@@ -104,10 +90,6 @@ class GameApp:
     
     def start(self):
         pygame.init()
-
-
-
-
 
         self.surface = pygame.display.set_mode((self.width, self.height))
         if self.isFullScreen == True:
