@@ -1,5 +1,5 @@
 # from typing import List
-from pygameapp import GameApp, GameImage, GameFont, GameText
+from gameapp import GameApp, GameImage, GameFont, GameText
 import pygame.key, pygame.surface, pygame.display, pygame.transform
 #from pygame import key
 from pygame.locals import *

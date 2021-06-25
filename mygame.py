@@ -1,4 +1,10 @@
-from pygameapp import *
+import pygame
+from gameapp import *
+
+class MyRedCar(GameImage):
+   def __init__(self):
+        super().__init__("images\\redcar.png", (200, 300))
+    
 
 class MyGame(GameApp):
     def __init__(self):
@@ -8,10 +14,13 @@ class MyGame(GameApp):
         self.myFont = None
         self.myFontImage = None
         self.myText = None
+        self.redcar = None
+        self.fps = 5 
 
 
     def on_start(self):
-        self.imgCar = GameImage('bluecar.png', (10,500))
+        self.imgCar = GameImage('images\\bluecar.png', (10,500))
+        self.redcar = MyRedCar()
         self.myFont = GameFont('Verdana',50)
         self.myText = GameText(self.myFont, 'mart is great', (125, 300), (255, 255, 125))
         
@@ -28,6 +37,7 @@ class MyGame(GameApp):
         self.imgCar.render()
         self.myText.text = str(self.clock.get_time())
         self.myText.render()
+        self.redcar.render()
 
 
     def on_event(self, eventId):

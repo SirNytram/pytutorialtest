@@ -12,10 +12,10 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "fkpythin",
+            "name": "mygame",
             "type": "python",
             "request": "launch",
-            "program": "funkinpython.py",
+            "program": "mygame.py",
             "console": "integratedTerminal"
         }
     ]
