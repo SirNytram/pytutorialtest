@@ -1,4 +1,4 @@
-import pygame
+from pygame.locals import *
 from gameapp import *
 
 class MyRedCar(GameImage):
